@@ -65,7 +65,10 @@ public final class Transition {
                         throw new Exception(); 
 
                 } else {
-                    if (parser[s].length() != 1) throw new Exception();
+                    int x = parser[s].charAt(0);
+                    if (parser[s].length() != 1 || 
+                        !(x > 32 && x < 127))
+                        throw new Exception();
 
                 } // if
 
