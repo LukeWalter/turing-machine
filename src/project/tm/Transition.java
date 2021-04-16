@@ -34,35 +34,83 @@ public final class Transition {
             int t;
             for (t = 0; t < (numTapes - 1); t++) {
                 
-                parser[6 + t * 6] = delta.substring((i + 7) + (t * 6), (i + 9) + (t * 6));    // "//"
-                parser[7 + t * 6] = delta.substring((i + 9) + (t * 6), (i + 10) + (t * 6));   // "input (tape 2+)"
-                parser[8 + t * 6] = delta.substring((i + 10) + (t * 6), (i + 12) + (t * 6));  // "->"
-                parser[9 + t * 6] = delta.substring((i + 12) + (t * 6), (i + 13) + (t * 6));  // "output (tape 2+)"
-                parser[10 + t * 6] = delta.substring((i + 13) + (t * 6), (i + 14) + (t * 6)); // ","
-                parser[11 + t * 6] = delta.substring((i + 14) + (t * 6), (i + 15) + (t * 6)); // "move direction"
+                parser[6 + t * 6] = delta.substring((i + 7) + (t * 8), (i + 9) + (t * 8));    // "//"
+                parser[7 + t * 6] = delta.substring((i + 9) + (t * 8), (i + 10) + (t * 8));   // "input (tape 2+)"
+                parser[8 + t * 6] = delta.substring((i + 10) + (t * 8), (i + 12) + (t * 8));  // "->"
+                parser[9 + t * 6] = delta.substring((i + 12) + (t * 8), (i + 13) + (t * 8));  // "output (tape 2+)"
+                parser[10 + t * 6] = delta.substring((i + 13) + (t * 8), (i + 14) + (t * 8)); // ","
+                parser[11 + t * 6] = delta.substring((i + 14) + (t * 8), (i + 15) + (t * 8)); // "move direction"
 
             } // for
 
             parser[parser.length - 1] = delta.substring(delta.length() - 1, delta.length()); // ;
-
             if (delta.length() > ((i + 15) + (t * 6))) throw new Exception();
 
-            for (String s : parser) {
-                s.charAt(0);
-                System.out.println(s);
-            
+            String[] states = parser[0].substring(0, i).split("->", 3);
+            if (states.length != 2 || 
+                states[0].equals("") || states[1].equals("") || 
+                !states[0].matches("^[a-zA-Z0-9]*$") ||
+                !states[1].matches("^[a-zA-Z0-9]*$")) 
+                throw new Exception();
+
+            if (!parser[parser.length - 1].equals(";")) 
+                throw new Exception();
+
+            for (int s = 1; s < parser.length - 1; s++) {
+
+                if (s % 2 == 0) {
+                    if ((s % 6 == 0 && !parser[s].equals("//")) || 
+                        (s % 6 == 2 && !parser[s].equals("->")) ||
+                        (s % 6 == 4 && !parser[s].equals(","))) 
+                        throw new Exception(); 
+
+                } else {
+                    if (parser[s].length() != 1) throw new Exception();
+
+                } // if
+
             } // for
 
+            initialState = states[0];
+            targetState = states[1];
+
+            inputs = new char[numTapes];
+            inputs[0] = parser[1].charAt(0);
+            for (int in = 1; in < inputs.length; in++) inputs[in] = parser[7 + (in - 1) * 6].charAt(0);
+
+            outputs = new char[numTapes];
+            outputs[0] = parser[3].charAt(0);
+            for (int out = 1; out < outputs.length; out++) outputs[out] = parser[9 + (out - 1) * 6].charAt(0);
+
+            dirs = new char[numTapes];
+            dirs[0] = parser[5].charAt(0);
+            for (int dir = 1; dir < dirs.length; dir++) dirs[dir] = parser[11 + (dir - 1) * 6].charAt(0);
+
+            System.out.println(initialState + ", " + targetState);
+            for (char c : inputs)
+                System.out.print(c + " ");
+                System.out.println();
+            for (char c : outputs)
+                System.out.print(c + " ");
+                System.out.println();
+            for (char c : dirs)
+                System.out.print(c + " ");
+                System.out.println();
+            
+
         } catch (Exception e) {
-            MalformedTransitionException mte = new MalformedTransitionException();
-            throw mte;
+            throw new MalformedTransitionException();
 
         } // try
 
-        inputs = new char[numTapes];
-        outputs = new char[numTapes];
-        dirs = new char[numTapes];
-
     } // Constructor
+
+    // public int getTapes { return tapes; }
+
+    public String getInitialState() { return initialState; }
+    public String getTargetState() { return targetState; }
+    public char[] getInputs() { return inputs; }
+    public char[] getOutputs() { return outputs; }
+    public char[] getDirs() { return dirs; }
 
 } // Transition
