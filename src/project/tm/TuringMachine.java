@@ -9,7 +9,10 @@ public class TuringMachine {
     char[] moves;
     String initialState;
 
-    public TuringMachine(String title, String[] q, char[] s, char[] t, int tapes, char[] moves, String q0) {
+    Tape[] tapes;
+    Transition[] deltaFunctions;
+
+    public TuringMachine(String title, String[] q, char[] s, char[] t, int tapes, char[] moves, String q0, Transition[] d) {
 
         this.name = title;
 
@@ -18,8 +21,10 @@ public class TuringMachine {
         this.inputAlphabet = s; // check
 
         this.stackAlphabet = t; // check
-        
+
         this.moves = moves; // check
+
+        this.deltaFunctions = d; // check
 
 
 
