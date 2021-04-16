@@ -1,9 +1,8 @@
 package project.tm;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 public class TuringMachine {
 
@@ -28,26 +27,83 @@ public class TuringMachine {
             this.numTapes = tapes;
 
             this.states = new TreeSet<>();
-            this.states.addAll(Arrays.<String>stream(q).collect(Collectors.toSet()));
-
+            if (q == null || q.length == 0) throw new Exception();
+            for (String state : q) {
+                if (this.states.add(state) == false) {
+                   throw new Exception();
+                
+                } // if
+            
+            } // for
+            
             this.inputAlphabet = new TreeSet<>();
-            this.inputAlphabet.addAll(Arrays.<Character>stream(s).collect(Collectors.toSet()));
+            if (s == null || s.length == 0) throw new Exception();
+            for (Character c : s) {
+                if (this.inputAlphabet.add(c) == false) {
+                   throw new Exception();
+                
+                } // if
+            
+            } // for
 
             this.stackAlphabet = new TreeSet<>();
-            this.stackAlphabet.addAll(Arrays.<Character>stream(t).collect(Collectors.toSet()));
+            if (t == null || t.length == 0) throw new Exception();
+            for (Character c : t) {
+                if (this.stackAlphabet.add(c) == false) {
+                   throw new Exception();
+                
+                } // if
+            
+            } // for
+            if (!(this.stackAlphabet.containsAll(this.inputAlphabet) &&
+                  this.stackAlphabet.contains('_')))
+                throw new Exception();
+
 
             this.moves = new TreeSet<>();
-            this.moves.addAll(Arrays.<Character>stream(moves).collect(Collectors.toSet()));
+            if (moves == null || moves.length == 0) throw new Exception();
+            for (Character c : moves) {
+                if (this.moves.add(c) == false) {
+                   throw new Exception();
+                
+                } // if
+            
+            } // for
 
-            this.deltaFunctions = Arrays.<Transition>stream(d).collect(Collectors.toSet());
 
+            this.deltaFunctions = new HashSet<>();
+            if (d == null || d.length == 0) throw new Exception();
+            for (Transition rf : d) {
+                if (this.deltaFunctions.add(rf) == false) {
+                   throw new Exception();
+                
+                } else {
+                    if (rf.getTapes() != numTapes ||
+                        !this.states.contains(rf.getInitialState()) || 
+                        !this.states.contains(rf.getTargetState()))
+                        throw new Exception();
+                    
+                    Character[] i = rf.getInputs();
+                    Character[] o = rf.getOutputs();
+                    Character[] m = rf.getDirs();
+
+                    for (int n = 0; n < rf.getTapes(); n++) {
+                        if (!this.stackAlphabet.contains(i[n]) ||
+                            !this.stackAlphabet.contains(o[n]) || 
+                            !this.moves.contains(m[n]))
+                            throw new Exception();
+
+                    } // for
+                    
+                } // if
+            
+            } // for
+
+            if (!this.states.contains(q0)) throw new Exception();
             this.initialState = q0;
             this.currentState = q0;
 
             this.tapes = new Tape[numTapes];
-            for (int i = 1; i < this.tapes.length; i++)
-                this.tapes[i] = new Tape("Tape " + i);
-
         
         } catch (Exception e) {
             throw new TMException();
@@ -57,8 +113,7 @@ public class TuringMachine {
     } // TuringMachine
 
     public boolean accepts(String input) {
-        System.out.println(input + " is accepted.");
-        return true;
+        throw new UnsupportedOperationException();
 
     } // process
 

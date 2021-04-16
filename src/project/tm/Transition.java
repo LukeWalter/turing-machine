@@ -6,9 +6,9 @@ public final class Transition {
 
     String initialState;
     String targetState;
-    char[] inputs;
-    char[] outputs;
-    char[] dirs;
+    Character[] inputs;
+    Character[] outputs;
+    Character[] dirs;
 
     public Transition(String delta, int numTapes) {
 
@@ -65,9 +65,11 @@ public final class Transition {
                         throw new Exception(); 
 
                 } else {
-                    int x = parser[s].charAt(0);
+                    char x = parser[s].charAt(0);
                     if (parser[s].length() != 1 || 
-                        !(x > 32 && x < 127))
+                        !(x > 32 && x < 127) ||
+                        (s % 6 == 5 &&
+                        (x != 'L' && x != 'R' && x != 'S')))
                         throw new Exception();
 
                 } // if
@@ -77,15 +79,15 @@ public final class Transition {
             initialState = states[0];
             targetState = states[1];
 
-            inputs = new char[numTapes];
+            inputs = new Character[numTapes];
             inputs[0] = parser[1].charAt(0);
             for (int in = 1; in < inputs.length; in++) inputs[in] = parser[7 + (in - 1) * 6].charAt(0);
 
-            outputs = new char[numTapes];
+            outputs = new Character[numTapes];
             outputs[0] = parser[3].charAt(0);
             for (int out = 1; out < outputs.length; out++) outputs[out] = parser[9 + (out - 1) * 6].charAt(0);
 
-            dirs = new char[numTapes];
+            dirs = new Character[numTapes];
             dirs[0] = parser[5].charAt(0);
             for (int dir = 1; dir < dirs.length; dir++) dirs[dir] = parser[11 + (dir - 1) * 6].charAt(0);
 
@@ -98,11 +100,12 @@ public final class Transition {
 
     // public int getTapes { return tapes; }
 
+    public int getTapes() { return tapes; }
     public String getInitialState() { return initialState; }
     public String getTargetState() { return targetState; }
-    public char[] getInputs() { return inputs; }
-    public char[] getOutputs() { return outputs; }
-    public char[] getDirs() { return dirs; }
+    public Character[] getInputs() { return inputs; }
+    public Character[] getOutputs() { return outputs; }
+    public Character[] getDirs() { return dirs; }
 
     @Override
     public String toString() {

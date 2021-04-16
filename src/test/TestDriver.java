@@ -1,6 +1,6 @@
 package test;
 
-import java.util.Scanner;
+// import java.util.Scanner;
 import project.tm.*;
 
 public final class TestDriver {
@@ -25,21 +25,17 @@ public final class TestDriver {
             new Character[]{'L', 'R', 'S'}, 
             "q0", 
             new Transition[] {
-                new Transition("q1->q2: _->a,R // _->b,R // _->c,R // _->d,R;", 4),
-                new Transition("q1->q2: a->_,R // b->_,R // c->_,R // d->_,R;", 4)
+                new Transition("q1->q2: _->a,L // _->b,R // _->c,S // _->d,L;", 4),
+                new Transition("q1->q2: a->_,R // b->_,S // c->_,L // d->_,R;", 4)
 
             }
         );
 
         System.out.println(tm);
 
-        Scanner sc = new Scanner(System.in);
-        tm.accepts(sc.nextLine());
-        sc.close();
-
-
-        Tape t2 = new Tape("Tape 2", "Hello!");
-        System.out.println(t2);
+        // Scanner sc = new Scanner(System.in);
+        // tm.accepts(sc.nextLine());
+        // sc.close();
 
     } // main
 
