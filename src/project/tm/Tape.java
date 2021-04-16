@@ -26,8 +26,10 @@ public class Tape {
         contents = new char[len + 1];
         
         for (int i = 0; i < len; i++) {
-            contents[i] = input.charAt(i);
-
+            char c = input.charAt(i);
+            if (!(c > 32 && c < 127)) throw new InvalidInputException();
+            contents[i] = c;
+            
         } // for
 
         contents[len] = '_';
