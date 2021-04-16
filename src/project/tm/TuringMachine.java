@@ -35,6 +35,8 @@ public class TuringMachine {
                 } // if
             
             } // for
+            if (!this.states.contains("qa"))
+                throw new Exception();
             
             this.inputAlphabet = new TreeSet<>();
             if (s == null || s.length == 0) throw new Exception();
@@ -118,9 +120,77 @@ public class TuringMachine {
     } // process
 
     public void simulate(String input) {
-        throw new UnsupportedOperationException();
+        
+        for (int i = 0; i < input.length(); i++) {
+            if (!inputAlphabet.contains(input.charAt(i)))
+                throw new InvalidInputException();
 
-    } // process
+        } // for
+        
+        tapes[0] = new Tape("Tape 1", input);
+        for (int i = 1; i < tapes.length; i++) 
+            tapes[i] = new Tape("Tape " + (i + 1));
+
+        System.out.println("Simulating TM \"" + name + "\" on input string \"" + input + "\"...\n");
+
+        System.out.println("> Initial state: " + currentState);
+        for (Tape t : tapes)
+            System.out.println(t);
+
+        while (true) {
+            
+            if (currentState.equals("qa")) {
+                System.out.println("**Input string \"" + input + "\" is accepted by \"" + name + "\".**");
+                return;
+
+            } else if (currentState.equals("qr")) {
+                System.out.println("**Input string \"" + input + "\" is rejected by \"" + name + "\".**");
+                return;
+
+            } else {
+                
+                Transition[] d = deltaFunctions.stream()
+                    .filter((f) -> { return f.getInitialState().equals(currentState); })
+                    .filter((f) -> { 
+                        Character[] in = f.getInputs(); 
+                        for (int i = 0; i < in.length; i++) {
+                            if (tapes[i].getCurrent() != in[i].charValue()) return false;
+
+                        } // for
+                        return true;
+                    })
+                    .toArray(Transition[]::new);
+
+                if (d.length == 0) {
+                    System.out.println("**Input string \"" + input + "\" is rejected by \"" + name + ".**\"");
+                    return;
+
+                } else if (d.length > 1) {
+                    throw new NondeterminismException();
+                
+                } else {
+                    
+                    System.out.println("Applying >> " + d[0] + "\n");
+                    Character[] i = d[0].getInputs();
+                    Character[] o = d[0].getOutputs();
+                    Character[] m = d[0].getDirs();
+
+                    for (int n = 0; n < tapes.length; n++) 
+                        tapes[n].move(i[n], o[n], m[n]);
+
+                    currentState = d[0].getTargetState();
+
+                    System.out.println("> Current state: " + currentState);
+                    for (Tape t : tapes)
+                        System.out.println(t);
+                
+                } // if
+
+            } // if
+
+        } // while
+
+    } // simulate
 
     @Override
     public String toString() {

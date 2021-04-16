@@ -19,22 +19,39 @@ public class Tape {
 
     public Tape(String name, String input) {
         
-        this.name = name;
-        head = 0;
+        if (input.equals("") || input.equals(null)) {
+            this.name = name;
+            head = 0;
         
-        int len = input.length();
-        contents = new char[len + 1];
-        
-        for (int i = 0; i < len; i++) {
-            char c = input.charAt(i);
-            if (!(c > 32 && c < 127)) throw new InvalidInputException();
-            contents[i] = c;
-            
-        } // for
+            contents = new char[2];
+            contents[0] = '_';
+            contents[1] = '_';
 
-        contents[len] = '_';
+        } else {
+            
+            this.name = name;
+            head = 0;
+            
+            int len = input.length();
+            contents = new char[len + 1];
+            
+            for (int i = 0; i < len; i++) {
+                char c = input.charAt(i);
+                if (!(c > 32 && c < 127)) throw new InvalidInputException();
+                contents[i] = c;
+                
+            } // for
+
+            contents[len] = '_';
+
+        } // if
 
     } // Tape
+
+    public char getCurrent() {
+        return contents[head];
+
+    } // getCurrent
     
     public void move(char input, char output, char dir) {
 
@@ -58,12 +75,12 @@ public class Tape {
                     break;
 
                 default:
-                    throw new IllegalArgumentException();
+                    throw new InvalidInputException();
 
             } // switch
 
         } else {
-            throw new IllegalArgumentException();
+            throw new InvalidInputException();
 
         } // if
 
