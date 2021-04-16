@@ -47,6 +47,7 @@ public class TuringMachine {
                 } // if
             
             } // for
+            if (this.inputAlphabet.contains('_')) throw new Exception();
 
             this.stackAlphabet = new TreeSet<>();
             if (t == null || t.length == 0) throw new Exception();
