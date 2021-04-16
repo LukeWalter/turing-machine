@@ -1,6 +1,6 @@
 package test;
 
-// import java.util.Scanner;
+import java.util.Scanner;
 import project.tm.*;
 
 public final class TestDriver {
@@ -47,13 +47,10 @@ public final class TestDriver {
             }
         );
 
-        System.out.println(tm);
-
-        tm.simulate("");
-
-        // Scanner sc = new Scanner(System.in);
-        // tm.accepts(sc.nextLine());
-        // sc.close();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Choose an input string to simulate: ");
+        tm.simulate(sc.nextLine());
+        sc.close();
 
     } // main
 
