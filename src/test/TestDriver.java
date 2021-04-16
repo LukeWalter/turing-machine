@@ -31,6 +31,9 @@ public final class TestDriver {
 
         System.out.println(tm);
 
+        Tape t2 = new Tape("Tape 2", "Hello!");
+        System.out.println(t2);
+
     } // main
 
 } // TestDriver

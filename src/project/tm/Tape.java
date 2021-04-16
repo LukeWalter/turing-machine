@@ -16,6 +16,23 @@ public class Tape {
         contents[1] = '_';
 
     } // Tape
+
+    public Tape(String name, String input) {
+        
+        this.name = name;
+        head = 0;
+        
+        int len = input.length();
+        contents = new char[len + 1];
+        
+        for (int i = 0; i < len; i++) {
+            contents[i] = input.charAt(i);
+
+        } // for
+
+        contents[len] = '_';
+
+    } // Tape
     
     public void move(char input, char output, char dir) {
 
