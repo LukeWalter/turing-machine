@@ -16,8 +16,8 @@ public final class TestDriver {
         // System.out.println(t);
 
         Transition d = new Transition("q1->q2: _->a,R // _->b,R // _->c,R // _->d,R;", 4);
-        //                             012345678901234567890123456789
-        //                             0         1         2         
+        System.out.println(d);
+
     } // main
 
 } // TestDriver

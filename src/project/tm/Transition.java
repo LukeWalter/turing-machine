@@ -89,18 +89,6 @@ public final class Transition {
             dirs[0] = parser[5].charAt(0);
             for (int dir = 1; dir < dirs.length; dir++) dirs[dir] = parser[11 + (dir - 1) * 6].charAt(0);
 
-            System.out.println(initialState + ", " + targetState);
-            for (char c : inputs)
-                System.out.print(c + " ");
-                System.out.println();
-            for (char c : outputs)
-                System.out.print(c + " ");
-                System.out.println();
-            for (char c : dirs)
-                System.out.print(c + " ");
-                System.out.println();
-            
-
         } catch (Exception e) {
             throw new MalformedTransitionException();
 
@@ -115,5 +103,19 @@ public final class Transition {
     public char[] getInputs() { return inputs; }
     public char[] getOutputs() { return outputs; }
     public char[] getDirs() { return dirs; }
+
+    @Override
+    public String toString() {
+
+        String dt = "𝛿-transition(" + tapes + "-tape)::[" + initialState + "->" + targetState + ": ";
+
+        for (int i = 0; i < tapes; i++) {
+            dt += inputs[i] + "->" + outputs[i] + ", " + dirs[i] + " // ";
+
+        } // for
+
+        return dt.substring(0, dt.length() - 4) + ";]";
+
+    } // toString
 
 } // Transition
