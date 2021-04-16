@@ -1,12 +1,13 @@
 package project.tm;
 
-public final class Tape {
+public class Tape {
 
-    String name;
-    int head;
-    char[] contents;
+    protected String name;
+    protected int head;
+    protected char[] contents;
 
     public Tape(String name) {
+        
         this.name = name;
         head = 0;
         
