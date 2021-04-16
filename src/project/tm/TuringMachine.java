@@ -1,7 +1,6 @@
 package project.tm;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -15,7 +14,7 @@ public class TuringMachine {
     Set<Character> inputAlphabet;
     Set<Character> stackAlphabet;
     Set<Character> moves;
-    List<Transition> deltaFunctions;
+    Set<Transition> deltaFunctions;
     String initialState;
     String currentState;
 
@@ -40,7 +39,7 @@ public class TuringMachine {
             this.moves = new TreeSet<>();
             this.moves.addAll(Arrays.<Character>stream(moves).collect(Collectors.toSet()));
 
-            this.deltaFunctions = Arrays.<Transition>stream(d).collect(Collectors.toList());
+            this.deltaFunctions = Arrays.<Transition>stream(d).collect(Collectors.toSet());
 
             this.initialState = q0;
             this.currentState = q0;
@@ -57,19 +56,30 @@ public class TuringMachine {
 
     } // TuringMachine
 
+    public boolean accepts(String input) {
+        System.out.println(input + " is accepted.");
+        return true;
+
+    } // process
+
+    public void simulate(String input) {
+        throw new UnsupportedOperationException();
+
+    } // process
+
     @Override
     public String toString() {
 
         String tm = "TM::" + name + "\n";
         tm += "Q = " + states + "\n";
-        tm += "S = " + inputAlphabet + "\n";
+        tm += "Σ = " + inputAlphabet + "\n";
         tm += "T = " + stackAlphabet + "\n";
         tm += "tapes = " + numTapes + "\n";
         tm += "moves = " + moves + "\n";
-        tm += "q0 = " + initialState + "\n\n";
+        tm += "q0 = " + initialState + "\n";
 
         for (Transition d : deltaFunctions)
-            tm += d;
+            tm += "\n" + d;
 
         return tm;
 
