@@ -24,7 +24,6 @@ public final class TestDriver {
         
 
         /**
-         *  Non-null input alphabet for the TM.
          *  This variable determines which 
          *  characters are allowed to be
          *  used in an input string. Each 
